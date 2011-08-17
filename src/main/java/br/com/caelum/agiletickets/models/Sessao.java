@@ -91,6 +91,6 @@ public class Sessao {
 	}
 
 	public boolean podeReservar(Integer numeroDeIngressos) {
-		return getIngressosDisponiveis() > numeroDeIngressos;
+		return getIngressosDisponiveis() >= numeroDeIngressos;
 	}
 }
