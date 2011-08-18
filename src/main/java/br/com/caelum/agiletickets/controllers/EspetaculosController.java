@@ -43,7 +43,7 @@ public class EspetaculosController {
 
 	@Get
 	@Path("/espetaculos")
-	public List<Espetaculo> lista() {
+	public List<Espetaculo> listaEspetaculos() {
 		result.include("estabelecimentos", estabelecimentos.todos());
 		return agenda.espetaculos();
 	}
@@ -52,10 +52,10 @@ public class EspetaculosController {
 	@Path("/espetaculos")
 	public void adicionaEspetaculo(Espetaculo espetaculo) {
 		validaDadosEspetaculo(espetaculo);
-		validator.onErrorRedirectTo(this).lista();
+		validator.onErrorRedirectTo(this).listaEspetaculos();
 
 		agenda.cadastra(espetaculo);
-		result.redirectTo(this).lista();
+		result.redirectTo(this).listaEspetaculos();
 	}
 
 	@Get
@@ -73,6 +73,7 @@ public class EspetaculosController {
 	@Path("/sessao/{sessaoId}/reserva")
 	public void reserva(Long sessaoId, final Integer quantidade) {
 		sessao = agenda.sessao(sessaoId);
+
 		validaReserva(quantidade);
 
 		validator.onErrorRedirectTo(this).sessao(sessao.getId());
@@ -104,7 +105,7 @@ public class EspetaculosController {
 
 		result.include("message", sessoes.size()
 				+ " sessoes criadas com sucesso");
-		result.redirectTo(this).lista();
+		result.redirectTo(this).listaEspetaculos();
 	}
 
 	private Espetaculo carregaEspetaculo(Long espetaculoId) {
@@ -124,7 +125,7 @@ public class EspetaculosController {
 		}
 		if (Strings.isNullOrEmpty(espetaculo.getDescricao())) {
 			validator.add(new ValidationMessage(
-					"Descrição do espetÃ¡culo nÃ£o pode estar em branco", ""));
+					"Descrição do espetáculo Não pode estar em branco", ""));
 		}
 	}
 
@@ -136,12 +137,12 @@ public class EspetaculosController {
 
 		if (quantidade < 1) {
 			validator.add(new ValidationMessage(
-					"VocÃª deve escolher um lugar ou mais", ""));
+					"você deve escolher um lugar ou mais", ""));
 		}
 
 		if (!sessao.podeReservar(quantidade)) {
 			validator.add(new ValidationMessage(
-					"NÃ£o existem ingressos disponÃ­veis", ""));
+					"Não existem ingressos disponíveis", ""));
 		}
 	}
 }
