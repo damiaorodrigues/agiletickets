@@ -12,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import org.joda.time.Days;
+import org.joda.time.Interval;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 
@@ -29,7 +31,7 @@ public class Espetaculo {
 	@Enumerated(EnumType.STRING)
 	private TipoDeEspetaculo tipo;
 
-	@OneToMany(mappedBy="espetaculo")
+	@OneToMany(mappedBy = "espetaculo")
 	private List<Sessao> sessoes = newArrayList();
 
 	@ManyToOne
@@ -79,8 +81,49 @@ public class Espetaculo {
 		return estabelecimento;
 	}
 
-	public List<Sessao> criaSessoes(LocalDate inicio, LocalDate fim, LocalTime horario, Periodicidade periodicidade) {
-		return null;
+	public List<Sessao> criaSessoes(LocalDate inicio, LocalDate fim,
+			LocalTime horario, Periodicidade periodicidade) {
+		int intervaloDeDias = 0;
+		int intervaloDeSemanas = 0;
+
+		if (periodicidade.equals(Periodicidade.DIARIA)) {
+			intervaloDeDias = Days.daysBetween(inicio, fim).getDays() + 1;
+
+			for (int i = 0; i < intervaloDeDias; i++) {
+				Sessao sessao = new Sessao();
+				sessao.setInicio(inicio.plusDays(i).toDateTime(horario));
+				sessao.setEspetaculo(this);
+				sessoes.add(sessao);
+			}
+		} else {
+
+			intervaloDeDias = Days.daysBetween(inicio, fim).getDays();
+			if (intervaloDeDias <= 7) {
+				intervaloDeSemanas = 1;
+			} else {
+				intervaloDeSemanas = (intervaloDeDias / 7) + 1;
+			}
+			int semanas = 0;
+			for (int i = 0; i < intervaloDeSemanas; i++) {
+
+				Sessao sessao = new Sessao();
+				sessao.setInicio(inicio.plusDays(semanas).toDateTime(horario));
+				semanas = semanas + 7;
+				sessao.setEspetaculo(this);
+				sessoes.add(sessao);
+			}
+		}
+
+		return sessoes;
 	}
 
+	private void adicionarSessaoNaLista(LocalDate inicio, LocalTime horario,
+			int intervalo) {
+		for (int i = 0; i < intervalo; i++) {
+			Sessao sessao = new Sessao();
+			sessao.setInicio(inicio.plusDays(i).toDateTime(horario));
+			sessao.setEspetaculo(this);
+			sessoes.add(sessao);
+		}
+	}
 }
