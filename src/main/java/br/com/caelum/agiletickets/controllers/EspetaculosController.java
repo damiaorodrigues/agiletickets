@@ -43,7 +43,7 @@ public class EspetaculosController {
 
 	@Get
 	@Path("/espetaculos")
-	public List<Espetaculo> listaEspetaculos() {
+	public List<Espetaculo> lista() {
 		result.include("estabelecimentos", estabelecimentos.todos());
 		return agenda.espetaculos();
 	}
@@ -52,10 +52,10 @@ public class EspetaculosController {
 	@Path("/espetaculos")
 	public void adicionaEspetaculo(Espetaculo espetaculo) {
 		validaDadosEspetaculo(espetaculo);
-		validator.onErrorRedirectTo(this).listaEspetaculos();
+		validator.onErrorRedirectTo(this).lista();
 
 		agenda.cadastra(espetaculo);
-		result.redirectTo(this).listaEspetaculos();
+		result.redirectTo(this).lista();
 	}
 
 	@Get
@@ -105,7 +105,7 @@ public class EspetaculosController {
 
 		result.include("message", sessoes.size()
 				+ " sessoes criadas com sucesso");
-		result.redirectTo(this).listaEspetaculos();
+		result.redirectTo(this).lista();
 	}
 
 	private Espetaculo carregaEspetaculo(Long espetaculoId) {
