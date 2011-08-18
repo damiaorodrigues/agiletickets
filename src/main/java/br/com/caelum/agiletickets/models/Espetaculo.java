@@ -13,7 +13,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import org.joda.time.Days;
-import org.joda.time.Interval;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 
@@ -115,15 +114,5 @@ public class Espetaculo {
 		}
 
 		return sessoes;
-	}
-
-	private void adicionarSessaoNaLista(LocalDate inicio, LocalTime horario,
-			int intervalo) {
-		for (int i = 0; i < intervalo; i++) {
-			Sessao sessao = new Sessao();
-			sessao.setInicio(inicio.plusDays(i).toDateTime(horario));
-			sessao.setEspetaculo(this);
-			sessoes.add(sessao);
-		}
 	}
 }
