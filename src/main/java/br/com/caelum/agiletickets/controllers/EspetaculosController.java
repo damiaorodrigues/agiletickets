@@ -50,23 +50,12 @@ public class EspetaculosController {
 
 	@Post
 	@Path("/espetaculos")
-	public void adiciona(Espetaculo espetaculo) {
-		validaEspetaculo(espetaculo);
+	public void adicionaEspetaculo(Espetaculo espetaculo) {
+		validaDadosEspetaculo(espetaculo);
 		validator.onErrorRedirectTo(this).lista();
 
 		agenda.cadastra(espetaculo);
 		result.redirectTo(this).lista();
-	}
-
-	private void validaEspetaculo(Espetaculo espetaculo) {
-		if (Strings.isNullOrEmpty(espetaculo.getNome())) {
-			validator.add(new ValidationMessage(
-					"Nome do espet·culo n„o pode estar em branco", ""));
-		}
-		if (Strings.isNullOrEmpty(espetaculo.getDescricao())) {
-			validator.add(new ValidationMessage(
-					"DescriÁ„o do espet√°culo n√£o pode estar em branco", ""));
-		}
 	}
 
 	@Get
@@ -92,23 +81,6 @@ public class EspetaculosController {
 		result.include("message", "Sessao reservada com sucesso");
 
 		result.redirectTo(IndexController.class).index();
-	}
-
-	private void validaReserva(final Integer quantidade) {
-		if (sessao == null) {
-			result.notFound();
-			return;
-		}
-
-		if (quantidade < 1) {
-			validator.add(new ValidationMessage(
-					"Voc√™ deve escolher um lugar ou mais", ""));
-		}
-
-		if (!sessao.podeReservar(quantidade)) {
-			validator.add(new ValidationMessage(
-					"N√£o existem ingressos dispon√≠veis", ""));
-		}
 	}
 
 	@Get
@@ -142,5 +114,34 @@ public class EspetaculosController {
 		}
 		validator.onErrorUse(status()).notFound();
 		return espetaculo;
+	}
+
+	// ValidaÁıes
+	private void validaDadosEspetaculo(Espetaculo espetaculo) {
+		if (Strings.isNullOrEmpty(espetaculo.getNome())) {
+			validator.add(new ValidationMessage(
+					"Nome do espet·culo n„o pode estar em branco", ""));
+		}
+		if (Strings.isNullOrEmpty(espetaculo.getDescricao())) {
+			validator.add(new ValidationMessage(
+					"DescriÁ„o do espet√°culo n√£o pode estar em branco", ""));
+		}
+	}
+
+	private void validaReserva(final Integer quantidade) {
+		if (sessao == null) {
+			result.notFound();
+			return;
+		}
+
+		if (quantidade < 1) {
+			validator.add(new ValidationMessage(
+					"Voc√™ deve escolher um lugar ou mais", ""));
+		}
+
+		if (!sessao.podeReservar(quantidade)) {
+			validator.add(new ValidationMessage(
+					"N√£o existem ingressos dispon√≠veis", ""));
+		}
 	}
 }

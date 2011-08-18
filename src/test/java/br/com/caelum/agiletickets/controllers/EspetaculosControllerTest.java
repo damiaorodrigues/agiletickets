@@ -42,7 +42,7 @@ public class EspetaculosControllerTest {
 		Espetaculo espetaculo = new Espetaculo();
 		espetaculo.setDescricao("uma descricao");
 
-		controller.adiciona(espetaculo);
+		controller.adicionaEspetaculo(espetaculo);
 
 		verifyZeroInteractions(agenda);
 	}
@@ -52,7 +52,7 @@ public class EspetaculosControllerTest {
 		Espetaculo espetaculo = new Espetaculo();
 		espetaculo.setNome("um nome");
 
-		controller.adiciona(espetaculo);
+		controller.adicionaEspetaculo(espetaculo);
 
 		verifyZeroInteractions(agenda);
 	}
@@ -63,7 +63,7 @@ public class EspetaculosControllerTest {
 		espetaculo.setNome("um nome");
 		espetaculo.setDescricao("uma descricao");
 
-		controller.adiciona(espetaculo);
+		controller.adicionaEspetaculo(espetaculo);
 
 		verify(agenda).cadastra(espetaculo);
 	}
