@@ -80,7 +80,7 @@ public class EspetaculoTest {
 		// CENÁRIO
 		espetaculo = new Espetaculo();
 		inicio = new LocalDate(2011, 01, 01);
-		fim = new LocalDate(2011, 01, 41);
+		fim = new LocalDate(2011, 01, 31);
 		horario = new LocalTime(15, 00);
 		periodicidade = Periodicidade.SEMANAL;
 		int semanas = 0;
